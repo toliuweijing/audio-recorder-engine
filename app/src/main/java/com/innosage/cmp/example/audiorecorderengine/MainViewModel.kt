@@ -6,7 +6,9 @@ import com.innosage.android.audiorecorderengine.Recorder
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import java.io.File
-import java.util.*
+import java.text.SimpleDateFormat
+import java.util.Date
+import java.util.Locale
 
 class MainViewModel(
     private val recorder: Recorder,
@@ -19,7 +21,8 @@ class MainViewModel(
     private var audioFile: File? = null
 
     fun startRecording() {
-        val fileName = "audio_${Date().time}.mp4"
+        val sdf = SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault())
+        val fileName = "${sdf.format(Date())}.mp4"
         audioFile = File(context.cacheDir, fileName)
         recorder.startRecording(audioFile!!)
     }
