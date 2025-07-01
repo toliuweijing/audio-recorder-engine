@@ -31,6 +31,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.core.app.ActivityCompat
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.innosage.android.audiorecorderengine.AudioPlayerImpl
 import com.innosage.android.audiorecorderengine.RecordingFileManagerImpl
 import com.innosage.cmp.example.audiorecorderengine.recordingscreen.RecordingListScreen
 import com.innosage.cmp.example.audiorecorderengine.recordingscreen.RecordingListViewModel
@@ -62,7 +63,13 @@ fun MainScreen() {
     val context = LocalContext.current
     val recordingFileManager = RecordingFileManagerImpl()
     val recordingListViewModel: RecordingListViewModel =
-        viewModel(factory = RecordingListViewModelFactory(context, recordingFileManager))
+        viewModel(
+            factory = RecordingListViewModelFactory(
+                recordingFileManager = recordingFileManager,
+                audioPlayer = AudioPlayerImpl(context),
+                context = context,
+            )
+        )
     val recorderScreenViewModel: RecorderScreenViewModel =
         viewModel(factory = RecorderScreenViewModelFactory(context, recordingFileManager))
 
