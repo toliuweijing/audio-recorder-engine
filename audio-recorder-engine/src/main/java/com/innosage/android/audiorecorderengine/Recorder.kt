@@ -6,8 +6,7 @@ interface Recorder {
     fun startRecording(
         outputFile: File,
         autoSaveEnabled: Boolean = false,
-//        chunkDurationMillis: Long = AudioConstants.DEFAULT_CHUNK_DURATION_MILLIS,
-        chunkDurationMillis: Long = 10_000,
+        chunkDurationMillis: Long = AudioConstants.DEFAULT_CHUNK_DURATION_MILLIS,
         onChunkSaved: ((File) -> Unit)? = null,
         onError: ((Exception) -> Unit)? = null
     )
