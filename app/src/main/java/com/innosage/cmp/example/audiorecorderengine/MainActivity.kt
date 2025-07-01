@@ -31,6 +31,12 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.core.app.ActivityCompat
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.innosage.cmp.example.audiorecorderengine.recordingscreen.RecordingListScreen
+import com.innosage.cmp.example.audiorecorderengine.recordingscreen.RecordingListViewModel
+import com.innosage.cmp.example.audiorecorderengine.recordingscreen.RecordingListViewModelFactory
+import com.innosage.cmp.example.audiorecorderengine.recorderscreen.RecorderScreen
+import com.innosage.cmp.example.audiorecorderengine.recorderscreen.RecorderScreenViewModel
+import com.innosage.cmp.example.audiorecorderengine.recorderscreen.RecorderScreenViewModelFactory
 import com.innosage.cmp.example.audiorecorderengine.ui.theme.MyApplicationTheme
 
 class MainActivity : ComponentActivity() {
@@ -53,11 +59,14 @@ class MainActivity : ComponentActivity() {
 fun MainScreen() {
     var tabIndex by remember { mutableStateOf(0) }
     val context = LocalContext.current
-    val viewModel: MainViewModel = viewModel(factory = MainViewModelFactory(context))
+    val recordingListViewModel: RecordingListViewModel =
+        viewModel(factory = RecordingListViewModelFactory(context))
+    val recorderScreenViewModel: RecorderScreenViewModel =
+        viewModel(factory = RecorderScreenViewModelFactory(context))
 
     val tabs = listOf(
-        TabItem("Recorder", Icons.Default.Mic) { RecorderScreen(viewModel) },
-        TabItem("Recordings", Icons.Default.List) { RecordingListScreen(viewModel) }
+        TabItem("Recorder", Icons.Default.Mic) { RecorderScreen(recorderScreenViewModel) },
+        TabItem("Recordings", Icons.Default.List) { RecordingListScreen(recordingListViewModel) }
     )
 
     Scaffold(
@@ -69,7 +78,7 @@ fun MainScreen() {
                         onClick = {
                             tabIndex = index
                             if (index == 1) {
-                                viewModel.updateRecordings()
+                                recordingListViewModel.updateRecordings()
                             }
                         },
                         icon = { Icon(tab.icon, contentDescription = tab.title) },
@@ -91,47 +100,4 @@ fun MainScreen() {
 
 data class TabItem(val title: String, val icon: ImageVector, val screen: @Composable () -> Unit)
 
-@Composable
-fun RecorderScreen(viewModel: MainViewModel) {
-    var isRecording by remember { mutableStateOf(false) }
 
-    Column(
-        modifier = Modifier.fillMaxSize(),
-        verticalArrangement = Arrangement.Center,
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
-        Button(onClick = {
-            if (isRecording) {
-                viewModel.stopRecording()
-            } else {
-                viewModel.startRecording()
-            }
-            isRecording = !isRecording
-        }) {
-            Text(text = if (isRecording) "Stop Recording" else "Start Recording")
-        }
-    }
-}
-
-@Composable
-fun RecordingListScreen(viewModel: MainViewModel) {
-    val recordings by viewModel.recordings.collectAsState()
-
-    LazyColumn(modifier = Modifier.padding(horizontal = 16.dp)) {
-        items(recordings) { recording ->
-            Surface(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(vertical = 4.dp),
-                shape = RoundedCornerShape(8.dp),
-                color = MaterialTheme.colorScheme.surfaceVariant,
-                shadowElevation = 2.dp
-            ) {
-                Text(
-                    text = recording.name,
-                    modifier = Modifier.padding(16.dp)
-                )
-            }
-        }
-    }
-}

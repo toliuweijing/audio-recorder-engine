@@ -23,6 +23,7 @@ class RecorderImpl(
             recorder.setAudioEncoder(MediaRecorder.AudioEncoder.AAC)
             recorder.setOutputFile(FileOutputStream(outputFile).fd)
         }
+        recorder.setNextOutputFile(outputFile)
         recorder.prepare()
         recorder.start()
     }
