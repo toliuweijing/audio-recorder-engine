@@ -22,16 +22,16 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import java.io.File
+import com.innosage.cmp.example.audiorecorderengine.recordingscreen.AudioRecordingItem
 
 @Composable
 fun RecordingListScreen(viewModel: RecordingListViewModel) {
     val recordings by viewModel.recordings.collectAsState()
 
     LazyColumn(modifier = Modifier.padding(horizontal = 16.dp)) {
-        items(recordings) { recording ->
+        items(recordings) { recordingItem ->
             val currentlyPlayingFile by viewModel.currentlyPlayingFile.collectAsState()
-            val isPlaying = currentlyPlayingFile == recording
+            val isPlaying = currentlyPlayingFile == recordingItem
 
             Surface(
                 modifier = Modifier
@@ -50,15 +50,20 @@ fun RecordingListScreen(viewModel: RecordingListViewModel) {
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     Text(
-                        text = recording.name,
+                        text = recordingItem.file.name,
                         modifier = Modifier.weight(1f)
+                    )
+                    Text(
+                        text = "${recordingItem.duration} | ${recordingItem.fileSize}",
+                        style = MaterialTheme.typography.bodySmall,
+                        modifier = Modifier.padding(start = 8.dp)
                     )
                     IconButton(
                         onClick = {
                             if (isPlaying) {
                                 viewModel.stopPlaying()
                             } else {
-                                viewModel.playRecording(recording)
+                                viewModel.playRecording(recordingItem)
                             }
                         }
                     ) {
