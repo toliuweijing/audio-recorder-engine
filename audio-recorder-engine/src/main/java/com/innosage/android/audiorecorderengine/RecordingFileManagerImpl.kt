@@ -10,7 +10,11 @@ class RecordingFileManagerImpl : RecordingFileManager {
 
     override fun createRecordingFile(context: Context): File {
         val sdf = SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault())
-        val fileName = "${sdf.format(Date())}${AudioConstants.AUDIO_FILE_EXTENSION}"
+        val timestamp = sdf.format(Date())
+        val existingChunks = context.cacheDir.listFiles()?.filter {
+            it.name.startsWith(timestamp) && it.name.endsWith(AudioConstants.AUDIO_FILE_EXTENSION)
+        }?.size ?: 0
+        val fileName = "${timestamp}_chunk${existingChunks + 1}${AudioConstants.AUDIO_FILE_EXTENSION}"
         return File(context.cacheDir, fileName)
     }
 

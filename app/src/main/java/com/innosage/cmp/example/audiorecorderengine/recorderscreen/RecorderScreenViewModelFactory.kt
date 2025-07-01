@@ -16,7 +16,7 @@ class RecorderScreenViewModelFactory(
         if (modelClass.isAssignableFrom(RecorderScreenViewModel::class.java)) {
             @Suppress("UNCHECKED_CAST")
             return RecorderScreenViewModel(
-                RecorderImpl(MediaRecorder(context), context),
+                RecorderImpl(MediaRecorder(), context, recordingFileManager),
                 recordingFileManager,
                 context
             ) as T
