@@ -1,10 +1,9 @@
 package com.innosage.cmp.example.audiorecorderengine.recorderscreen
 
 import android.content.Context
-import android.media.MediaRecorder
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import com.innosage.android.audiorecorderengine.RecorderImpl
+import com.innosage.android.audiorecorderengine.AudioRecordRecorderImpl
 import com.innosage.android.audiorecorderengine.RecordingFileManager
 import com.innosage.android.audiorecorderengine.RecordingFileManagerImpl
 
@@ -16,7 +15,7 @@ class RecorderScreenViewModelFactory(
         if (modelClass.isAssignableFrom(RecorderScreenViewModel::class.java)) {
             @Suppress("UNCHECKED_CAST")
             return RecorderScreenViewModel(
-                RecorderImpl(MediaRecorder(), context, recordingFileManager),
+                AudioRecordRecorderImpl(context, recordingFileManager),
                 recordingFileManager,
                 context
             ) as T
