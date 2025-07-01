@@ -16,6 +16,7 @@ class RecorderImpl(
     private val recordingFileManager: RecordingFileManager
 ) : Recorder {
 
+    private var _isRecording: Boolean = false
     private var currentOutputFile: File? = null
     private var autoSaveHandler: Handler? = null
     private var autoSaveRunnable: Runnable? = null
@@ -32,6 +33,7 @@ class RecorderImpl(
         this.currentOutputFile = outputFile
         this.onChunkSavedCallback = onChunkSaved
         this.onErrorCallback = onError
+        _isRecording = true
 
         startMediaRecorder(outputFile)
 
@@ -58,6 +60,11 @@ class RecorderImpl(
         autoSaveRunnable = null
         stopMediaRecorder()
         currentOutputFile = null
+        _isRecording = false
+    }
+
+    override fun isRecording(): Boolean {
+        return _isRecording
     }
 
     private fun startMediaRecorder(outputFile: File) {

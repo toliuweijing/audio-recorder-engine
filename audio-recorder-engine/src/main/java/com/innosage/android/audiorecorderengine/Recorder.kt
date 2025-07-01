@@ -11,4 +11,5 @@ interface Recorder {
         onError: ((Exception) -> Unit)? = null
     )
     fun stopRecording()
+    fun isRecording(): Boolean
 }
