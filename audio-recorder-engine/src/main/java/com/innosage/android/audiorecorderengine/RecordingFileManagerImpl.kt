@@ -19,6 +19,9 @@ class RecordingFileManagerImpl : RecordingFileManager {
     }
 
     override fun getRecordingFiles(context: Context): List<File> {
-        return context.cacheDir.listFiles()?.filter { it.name.endsWith(AudioConstants.AUDIO_FILE_EXTENSION_M4A) } ?: emptyList()
+        val supportedExtensions = listOf(AudioConstants.AUDIO_FILE_EXTENSION_M4A, AudioConstants.AUDIO_FILE_EXTENSION_WAV)
+        return context.cacheDir.listFiles()?.filter { file ->
+            supportedExtensions.any { extension -> file.name.endsWith(extension) }
+        } ?: emptyList()
     }
 }

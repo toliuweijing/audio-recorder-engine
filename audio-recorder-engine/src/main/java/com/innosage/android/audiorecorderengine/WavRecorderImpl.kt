@@ -61,20 +61,20 @@ class WavRecorderImpl(
                 autoSaveHandler = Handler(Looper.getMainLooper())
                 autoSaveRunnable = object : Runnable {
                     override fun run() {
-                        try {
-                            switchRecordingChunk()
-                            autoSaveHandler?.postDelayed(this, chunkDurationMillis)
-                        } catch (e: Exception) {
-                            onErrorCallback?.invoke(e)
-                            Toast.makeText(context, "Recording auto-save error: ${e.message}", Toast.LENGTH_LONG).show()
-                        }
+                        Thread {
+                            try {
+                                switchRecordingChunk()
+                                autoSaveHandler?.postDelayed(this, chunkDurationMillis)
+                            } catch (e: Exception) {
+                                onErrorCallback?.invoke(e)
+                            }
+                        }.start()
                     }
                 }
                 autoSaveHandler?.postDelayed(autoSaveRunnable!!, chunkDurationMillis)
             }
         } catch (e: Exception) {
             onErrorCallback?.invoke(e)
-            Toast.makeText(context, "Recording start error: ${e.message}", Toast.LENGTH_LONG).show()
             releaseResources()
         }
     }
@@ -129,7 +129,6 @@ class WavRecorderImpl(
                     wavFileWriter?.writePcmData(audioBuffer, 0, bytesRead)
                 } catch (e: IOException) {
                     onErrorCallback?.invoke(e)
-                    Toast.makeText(context, "Error writing WAV data: ${e.message}", Toast.LENGTH_LONG).show()
                     stopRecording()
                 }
             }
@@ -155,7 +154,6 @@ class WavRecorderImpl(
             wavFileWriter = null
         } catch (e: Exception) {
             onErrorCallback?.invoke(e)
-            Toast.makeText(context, "Error releasing resources: ${e.message}", Toast.LENGTH_LONG).show()
         }
     }
 }
