@@ -34,6 +34,6 @@ class RecorderImpl(
     }
 
     override fun getRecordings(): List<File> {
-        return context.cacheDir.listFiles()?.filter { it.name.endsWith(".mp4") } ?: emptyList()
+        return context.cacheDir.listFiles()?.filter { it.name.endsWith(AudioConstants.AUDIO_FILE_EXTENSION) } ?: emptyList()
     }
 }
