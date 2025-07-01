@@ -22,7 +22,7 @@ class MainViewModel(
 
     fun startRecording() {
         val sdf = SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault())
-        val fileName = "${sdf.format(Date())}.mp4"
+        val fileName = "${sdf.format(Date())}.m4a"
         audioFile = File(context.cacheDir, fileName)
         recorder.startRecording(audioFile!!)
     }
