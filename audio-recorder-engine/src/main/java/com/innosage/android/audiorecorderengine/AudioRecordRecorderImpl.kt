@@ -1,7 +1,6 @@
 package com.innosage.android.audiorecorderengine
 
 import android.content.Context
-import android.media.AudioFormat
 import android.media.AudioRecord
 import android.media.MediaCodec
 import android.media.MediaCodecInfo
@@ -11,7 +10,6 @@ import android.os.Handler
 import android.os.Looper
 import android.widget.Toast
 import java.io.File
-import java.io.IOException
 import java.nio.ByteBuffer
 import java.util.concurrent.atomic.AtomicBoolean
 
@@ -216,7 +214,7 @@ class AudioRecordRecorderImpl(
         stopMediaMuxer()
         currentOutputFile?.let { onChunkSavedCallback?.invoke(it) }
 
-        val newOutputFile = recordingFileManager.createRecordingFile(context)
+        val newOutputFile = recordingFileManager.createRecordingFile(context, AudioConstants.AUDIO_FILE_EXTENSION_M4A)
         currentOutputFile = newOutputFile
         setupMediaMuxer(newOutputFile)
         presentationTimeUs = 0 // Reset presentation time for new chunk

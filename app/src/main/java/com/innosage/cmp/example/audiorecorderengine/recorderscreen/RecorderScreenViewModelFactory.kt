@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModelProvider
 import com.innosage.android.audiorecorderengine.AudioRecordRecorderImpl
 import com.innosage.android.audiorecorderengine.RecordingFileManager
 import com.innosage.android.audiorecorderengine.RecordingFileManagerImpl
+import com.innosage.android.audiorecorderengine.WavRecorderImpl
 
 class RecorderScreenViewModelFactory(
     private val context: Context,
@@ -15,7 +16,7 @@ class RecorderScreenViewModelFactory(
         if (modelClass.isAssignableFrom(RecorderScreenViewModel::class.java)) {
             @Suppress("UNCHECKED_CAST")
             return RecorderScreenViewModel(
-                AudioRecordRecorderImpl(context, recordingFileManager),
+                WavRecorderImpl(context, recordingFileManager),
                 recordingFileManager,
                 context
             ) as T
