@@ -31,6 +31,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.core.app.ActivityCompat
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.innosage.android.audiorecorderengine.RecordingFileManagerImpl
 import com.innosage.cmp.example.audiorecorderengine.recordingscreen.RecordingListScreen
 import com.innosage.cmp.example.audiorecorderengine.recordingscreen.RecordingListViewModel
 import com.innosage.cmp.example.audiorecorderengine.recordingscreen.RecordingListViewModelFactory
@@ -59,10 +60,11 @@ class MainActivity : ComponentActivity() {
 fun MainScreen() {
     var tabIndex by remember { mutableStateOf(0) }
     val context = LocalContext.current
+    val recordingFileManager = RecordingFileManagerImpl()
     val recordingListViewModel: RecordingListViewModel =
-        viewModel(factory = RecordingListViewModelFactory(context))
+        viewModel(factory = RecordingListViewModelFactory(context, recordingFileManager))
     val recorderScreenViewModel: RecorderScreenViewModel =
-        viewModel(factory = RecorderScreenViewModelFactory(context))
+        viewModel(factory = RecorderScreenViewModelFactory(context, recordingFileManager))
 
     val tabs = listOf(
         TabItem("Recorder", Icons.Default.Mic) { RecorderScreen(recorderScreenViewModel) },
@@ -99,5 +101,3 @@ fun MainScreen() {
 }
 
 data class TabItem(val title: String, val icon: ImageVector, val screen: @Composable () -> Unit)
-
-

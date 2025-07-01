@@ -23,7 +23,6 @@ class RecorderImpl(
             recorder.setAudioEncoder(MediaRecorder.AudioEncoder.AAC)
             recorder.setOutputFile(FileOutputStream(outputFile).fd)
         }
-        recorder.setNextOutputFile(outputFile)
         recorder.prepare()
         recorder.start()
     }
@@ -33,7 +32,4 @@ class RecorderImpl(
         recorder.reset()
     }
 
-    override fun getRecordings(): List<File> {
-        return context.cacheDir.listFiles()?.filter { it.name.endsWith(AudioConstants.AUDIO_FILE_EXTENSION) } ?: emptyList()
-    }
 }
