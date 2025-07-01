@@ -2,6 +2,7 @@ package com.innosage.cmp.example.audiorecorderengine.recordingscreen
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -49,15 +50,17 @@ fun RecordingListScreen(viewModel: RecordingListViewModel) {
                     horizontalArrangement = Arrangement.SpaceBetween,
                     verticalAlignment = Alignment.CenterVertically
                 ) {
-                    Text(
-                        text = recordingItem.file.name,
-                        modifier = Modifier.weight(1f)
-                    )
-                    Text(
-                        text = "${recordingItem.duration} | ${recordingItem.fileSize}",
-                        style = MaterialTheme.typography.bodySmall,
-                        modifier = Modifier.padding(start = 8.dp)
-                    )
+                    Column(modifier = Modifier.weight(1f)) {
+                        Text(
+                            text = recordingItem.file.name,
+                            style = MaterialTheme.typography.titleMedium
+                        )
+                        Text(
+                            text = "${recordingItem.duration} | ${recordingItem.fileSize}",
+                            style = MaterialTheme.typography.bodySmall,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant
+                        )
+                    }
                     IconButton(
                         onClick = {
                             if (isPlaying) {
